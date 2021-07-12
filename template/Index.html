@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <title>Heart Disease App</title>
+  </head>
+<body>
+<h1>Heart Disease Self Diagnose</h1>
+{% block content %}
+<div class="card card-accent-danger mb-3" style="width: 70%; padding: 2%; margin-left: auto; margin-right: auto;">
+  <form action="{% url 'index' %}" method="post">
+    {% csrf_token %}
+    {% load widget_tweaks %}
+    <div class="form-group">
+      <label>What type of chest Pain do you have?</label>
+      {% render_field form.cp_value class="form-control" placeholder="0: Typical Anginal;  1: Atypical Anginal; 2: Non-anginal Pain; 3: Asymptomatic" %}
+    </div>
+
+    <div class="form-group">
+      <label>What is your recorded maximum heart rate?</label>
+      {% render_field form.thalach_value class="form-control" placeholder="maximum value" %}
+    </div>
+
+    <div class="form-group">
+      <label>Do you have induced angina?</label>
+      {% render_field form.exang_value class="form-control" placeholder="1: Yes; 0: No" %}
+    </div>
+
+    <div class="form-group">
+      <label>What is your number of vessels?</label>
+      {% render_field form.ca_value class="form-control" placeholder="between 0-3" %}
+    </div>
+
+     <div class="form-group">
+      <label>What is your ST depression induced by exercise relative to rest?</label>
+      {% render_field form.oldpeak_value class="form-control" placeholder="Induced value" %}
+    </div>
+
+    <div class="form-group">
+      <label>Enter your age?</label>
+      {% render_field form.age_value class="form-control" placeholder="age" %}
+    </div>
+
+    <div class ="form-group">
+      <label>Sex ?</label>
+      {% render_field form.sex_value class="form-control" placeholder="1: male; 0: female" %}
+    </div>
+    <div class="form-group">
+      <label>What is your peak exercise ST segment slope?</label>
+      {% render_field form.slope_value class="form-control" placeholder="0: Upsloping; 1: Flat; 2: Downsloping" %}
+    </div>
+     <form action="download" method="POST">
+         {% csrf_token %}
+  <input type="submit" name="model" value="Support vector machine" class="btn btn-success">
+             <input type="submit" name="model_2" value="Logistic regression" class="btn btn-success">
+             <input type="submit" name="model_3" value="Decision Tree" class="btn btn-success">
+              <input type="submit" name="LinearModel" value="LinearModel" class="btn btn-success">
+</form>
+    <div class="form-group">
+      <label>What is your heart status?</label>
+      {% render_field form.thal_value class="form-control" placeholder="0: Normal; 1: Fixed Defect; 2: Reversible defect" %}
+    </div>
+    <button type="submit" class="btn btn-warning">Press to diagnose</button>
+  </form>
+  {%if prediction %}
+  <p> Patient is: {{prediction}}</p>
+  {%endif%}
+</div>
+{% endblock %}
+
+</body>
+</html>
